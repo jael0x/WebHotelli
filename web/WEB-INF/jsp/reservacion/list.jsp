@@ -31,7 +31,7 @@
         </div>
 
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-            <a> class="navbar-brand" href="${pageContext.request.contextPath}/index.htm">Inicio</a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/index.htm">Inicio</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -44,7 +44,7 @@
                         <a class="nav-link" href="${pageContext.request.contextPath}/habitacion/list.htm">Habitaciones</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/categoria/list.htm">Categorías</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/reservacion/list.htm">Categorías</a>
                     </li> 
                     <li class="nav-item">
                         <a class="nav-link" href="${pageContext.request.contextPath}/usuario/list.htm">Usuarios</a>
@@ -57,37 +57,41 @@
         <table border="1">
             <thead>
                 <tr>
-                    <th>Nombre</th>
-                    <th>Precio Inicial</th>
-                    <th>Precio por Usuario</th>
-                    <th>Usuarios M&aacute;ximos</th>
+                    <th>Usuario</th>
+                    <th>Habitaci&oacute;n</th>
+                    <th>Fecha de Entrada</th>
+                    <th>Fecha de Salida</th>
+                    <th>Estado</th>
                     <th>
-                        <a> <i class="fa fa-plus" style="font-size:20px;color:blue" href="${pageContext.request.contextPath}/categoria/create.htm"></i></a>
+                        <a> <i class="fa fa-plus" style="font-size:20px;color:blue" href="${pageContext.request.contextPath}/reservacion/create.htm"></i></a>
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <c:forEach items="${requestScope.categorias}" var="categoria">
+                <c:forEach items="${requestScope.reservaciones}" var="reservacion">
                     <tr>
                         <td>
-                            ${categoria.getNombre()}
+                            ${reservacion.getUsuarioId().getNombre()}
                         </td>
                         <td>
-                            ${categoria.getPrecioInicial()}
+                            ${reservacion.getHabitacionId()}
                         </td>
                         <td>
-                            ${categoria.getPrecioUsuario()}
+                            ${reservacion.getFechaEntradaMostrar()}
                         </td>
                         <td>
-                            ${categoria.getMaxUsuarios()}
+                            ${reservacion.getFechaSalidaMostrar()}
+                        </td>
+                        <td>
+                            ${reservacion.getEstado()}
                         </td>
                         <td>
                             <a> <i class="fa fa-eye" style="font-size:20px;color:black" 
-                                   href="${pageContext.request.contextPath}/categoria/retrieve/${categoria.getCategoriaId()}.htm"></i></a> |
+                                   href="${pageContext.request.contextPath}/reservacion/retrieve/${reservacion.getReservacionId()}.htm"></i></a> |
                             <a> <i class="fa fa-edit" style="font-size:20px;color:orange" 
-                                   href="${pageContext.request.contextPath}/categoria/update/${categoria.getCategoriaId()}.htm"></i></a>|
+                                   href="${pageContext.request.contextPath}/reservacion/update/${reservacion.getReservacionId()}.htm"></i></a>|
                             <a> <i class="fa fa-trash" style="font-size:20px;color:red" 
-                                   href="${pageContext.request.contextPath}/categoria/delete/${categoria.getCategoriaId()}.htm"></i></a>       
+                                   href="${pageContext.request.contextPath}/reservacion/delete/${reservacion.getReservacionId()}.htm"></i></a>       
 
                         </td>
                     </tr>

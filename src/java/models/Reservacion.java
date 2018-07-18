@@ -6,6 +6,7 @@
 package models;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -18,6 +19,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -62,6 +64,71 @@ public class Reservacion implements Serializable {
     @ManyToOne(optional = false)
     private Usuario usuarioId;
 
+    @Transient
+    private String strFechaEntrada;
+
+    @Transient
+    private String strFechaSalida;
+    
+    @Transient
+    private int idusuario;
+    
+    @Transient
+    private int idhabitacion;
+    
+    @Transient
+    private int idcategoria;
+
+    public String getStrFechaEntrada() {
+        return strFechaEntrada;
+    }
+
+    public void setStrFechaEntrada(String strFechaEntrada) {
+        this.strFechaEntrada = strFechaEntrada;
+    }
+
+    public String getStrFechaSalida() {
+        return strFechaSalida;
+    }
+
+    public void setStrFechaSalida(String strFechaSalida) {
+        this.strFechaSalida = strFechaSalida;
+    }
+    
+    public String getFechaEntradaMostrar() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(fechaEntrada);
+    }
+    
+    public String getFechaSalidaMostrar() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(fechaEntrada);
+    }
+
+    public int getIdusuario() {
+        return idusuario;
+    }
+
+    public void setIdusuario(int idusuario) {
+        this.idusuario = idusuario;
+    }
+
+    public int getIdhabitacion() {
+        return idhabitacion;
+    }
+
+    public void setIdhabitacion(int idhabitacion) {
+        this.idhabitacion = idhabitacion;
+    }
+
+    public int getIdcategoria() {
+        return idcategoria;
+    }
+
+    public void setIdcategoria(int idcategoria) {
+        this.idcategoria = idcategoria;
+    }
+    
     public Reservacion() {
     }
 
