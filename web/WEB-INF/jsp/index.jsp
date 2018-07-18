@@ -20,23 +20,34 @@
     </head>
 
     <body>
+        <div class="jumbotron text-center" style="margin-bottom:0">
         <h1>Web Hotelli</h1>
-        <div>
-            <button type="reset">
-                <a href="${pageContext.request.contextPath}/reservacion/list.htm" style="text-decoration: none; color: black">Listado de Reservaciones</a>
-            </button>
-            <br><br>
-            <button type="reset">
-                <a href="${pageContext.request.contextPath}/habitacion/list.htm" style="text-decoration: none; color: black">Listado de Habitaciones</a>
-            </button>
-            <br><br>
-            <button type="reset">
-                <a href="${pageContext.request.contextPath}/categoria/list.htm" style="text-decoration: none; color: black">Listado de Categor&iacute;as</a>
-            </button>
-            <br><br>
-            <button type="reset">
-                <a href="${pageContext.request.contextPath}/usuario/list.htm" style="text-decoration: none; color: black">Listado de Usuarios</a>
-            </button>
+        <p>Tu Hotel Ideal</p> 
         </div>
+        
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/index.htm">Inicio</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="${pageContext.request.contextPath}/reservacion/list.htm">Reservaciones</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="${pageContext.request.contextPath}/habitacion/list.htm">Habitaciones</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="${pageContext.request.contextPath}/categoria/list.htm">Categorías</a>
+        </li> 
+        <li class="nav-item">
+            <a class="nav-link" href="${pageContext.request.contextPath}/usuario/list.htm">Usuarios</a>
+        </li> 
+        </ul>
+        </div>  
+        </nav>
+        
+        
     </body>
 </html>
