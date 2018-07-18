@@ -21,6 +21,7 @@
             background: #aaa;
                     }
         </style>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>Web Hotelli</title>
     </head>
     <body>
@@ -61,7 +62,7 @@
                     <th>Precio por Usuario</th>
                     <th>Usuarios M&aacute;ximos</th>
                     <th>
-                        <a href="${pageContext.request.contextPath}/categoria/create.htm">Crear</a>
+                        <a <i class="fa fa-plus" style="font-size:20px;color:blue" href="${pageContext.request.contextPath}/categoria/create.htm"></i></a>
                     </th>
                 </tr>
             </thead>
@@ -81,9 +82,13 @@
                             ${categoria.getMaxUsuarios()}
                         </td>
                         <td>
-                            <a href="${pageContext.request.contextPath}/categoria/retrieve/${categoria.getCategoriaId()}.htm">Ver</a> |
-                            <a href="${pageContext.request.contextPath}/categoria/update/${categoria.getCategoriaId()}.htm">Editar</a> |
-                            <a href="${pageContext.request.contextPath}/categoria/delete/${categoria.getCategoriaId()}.htm">Eliminar</a>
+                            <a <i class="fa fa-eye" style="font-size:20px;color:black" 
+                                  href="${pageContext.request.contextPath}/categoria/retrieve/${categoria.getCategoriaId()}.htm"></i></a> |
+                           <a <i class="fa fa-edit" style="font-size:20px;color:orange" 
+                                  href="${pageContext.request.contextPath}/categoria/update/${categoria.getCategoriaId()}.htm"></i></a>|
+                            <a <i class="fa fa-trash" style="font-size:20px;color:red" 
+                                 href="${pageContext.request.contextPath}/categoria/delete/${categoria.getCategoriaId()}.htm"></i></a>       
+                           
                         </td>
                     </tr>
                 </c:forEach>
