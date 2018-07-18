@@ -42,6 +42,7 @@ public class HabitacionController {
     public String list(Model model) throws Exception{
         try{
             List<Habitacion> habitaciones = service.list();
+            //Debe ordenarse por numeracion
             model.addAttribute("habitaciones", habitaciones);
             return "habitacion/list";
         }
