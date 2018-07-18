@@ -5,10 +5,12 @@
  */
 package controllers;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import javax.servlet.http.HttpServletRequest;
 import models.Categoria;
 import models.Habitacion;
@@ -42,7 +44,7 @@ public class HabitacionController {
     public String list(Model model) throws Exception{
         try{
             List<Habitacion> habitaciones = service.list();
-            //Debe ordenarse por numeracion
+            habitaciones.sort(Comparator.comparing(Habitacion::getNumeracion));
             model.addAttribute("habitaciones", habitaciones);
             return "habitacion/list";
         }
