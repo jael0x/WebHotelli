@@ -29,143 +29,138 @@ import services.ServiceException;
  *
  * @author JAEL ARMAS
  */
-
 @Controller
 @RequestMapping("/habitacion")
 public class HabitacionController {
-    
+
     @Autowired
     private HabitacionService service;
-    
+
     @Autowired
     private CategoriaService srvCategoria;
-    
-    @RequestMapping(value="/list", method= RequestMethod.GET)
-    public String list(Model model) throws Exception{
-        try{
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public String list(Model model) throws Exception {
+        try {
             List<Habitacion> habitaciones = service.list();
-            habitaciones.sort(Comparator.comparing(Habitacion::getNumeracion));
+            Comparator<Habitacion> comp = Comparator.comparing(Habitacion::getPlanta);
+            comp = comp.thenComparing(habitacion -> habitacion.getCategoriaId().getCategoriaId());
+            comp = comp.thenComparing(Habitacion::getNumeracion);
+            habitaciones.sort(comp);
             model.addAttribute("habitaciones", habitaciones);
             return "habitacion/list";
-        }
-        catch(ServiceException ex){
+        } catch (ServiceException ex) {
             model.addAttribute("message", ex.getMessage());
             return "error";
         }
     }
-    
+
     @ModelAttribute("listEstado")
     protected Map ListEstado() throws Exception {
-	Map<String,String> listEstado = new HashMap<String,String>();
-	listEstado.put("1", "Disponible");
-	listEstado.put("2", "Ocupada");
-	listEstado.put("3", "Inhabilitada");
+        Map<String, String> listEstado = new HashMap<String, String>();
+        listEstado.put("1", "Disponible");
+        listEstado.put("2", "Ocupada");
+        listEstado.put("3", "Inhabilitada");
         return listEstado;
     }
-    
+
     @ModelAttribute("listCategoria")
     public List<Categoria> ListCategoria() throws ServiceException {
         return srvCategoria.list();
     }
-    
-    @RequestMapping(value="/create", method= RequestMethod.GET)
-    public String create(Model model){
-        try{
+
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    public String create(Model model) {
+        try {
             Habitacion habitacion = new Habitacion();
             model.addAttribute("habitacion", habitacion);
             return "habitacion/create";
-        }
-        catch(Exception ex){
-            model.addAttribute("message", ex.getMessage());
-            return "error";
-        }
-    }
-    
-    @RequestMapping(value="/create", method= RequestMethod.POST)
-    public String create(Model model, @ModelAttribute("habitacion") Habitacion habitacion){
-        try{
-            int planta = habitacion.getPlanta();
-            int number = habitacion.getIntNumeracion();
-            if(number<10)
-                habitacion.setNumeracion(""+planta+"0"+number);
-            else
-                habitacion.setNumeracion(""+planta+number);
-            
-            Categoria categoria = srvCategoria.retrieve(habitacion.getIntCategoria());
-            habitacion.setCategoriaId(categoria);
-            
-            service.create(habitacion);
-            return "redirect:list.htm";
-        }
-        catch(ServiceException ex){
-            model.addAttribute("message", ex.getMessage());
-            return "error";
-        }
-    }
-    
-    @RequestMapping(value="/retrieve/{id}", method= RequestMethod.GET)
-    public String retrieve(Model model, @PathVariable String id){
-        try{
-            int pk = Integer.parseInt(id);
-            Habitacion habitacion = service.retrieve(pk);
-            model.addAttribute("habitacion", habitacion);
-            return "habitacion/retrieve";
-        }
-        catch(ServiceException ex){
+        } catch (Exception ex) {
             model.addAttribute("message", ex.getMessage());
             return "error";
         }
     }
 
-    @RequestMapping(value="/update/{id}", method= RequestMethod.GET)
-    public String update(Model model, @PathVariable String id){
-        try{
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public String create(Model model, @ModelAttribute("habitacion") Habitacion habitacion) {
+        try {
+            int planta = habitacion.getPlanta();
+            int number = habitacion.getIntNumeracion();
+            if (number < 10) {
+                habitacion.setNumeracion("" + planta + "0" + number);
+            } else {
+                habitacion.setNumeracion("" + planta + number);
+            }
+
+            Categoria categoria = srvCategoria.retrieve(habitacion.getIntCategoria());
+            habitacion.setCategoriaId(categoria);
+
+            service.create(habitacion);
+            return "redirect:list.htm";
+        } catch (ServiceException ex) {
+            model.addAttribute("message", ex.getMessage());
+            return "error";
+        }
+    }
+
+    @RequestMapping(value = "/retrieve/{id}", method = RequestMethod.GET)
+    public String retrieve(Model model, @PathVariable String id) {
+        try {
+            int pk = Integer.parseInt(id);
+            Habitacion habitacion = service.retrieve(pk);
+            model.addAttribute("habitacion", habitacion);
+            return "habitacion/retrieve";
+        } catch (ServiceException ex) {
+            model.addAttribute("message", ex.getMessage());
+            return "error";
+        }
+    }
+
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
+    public String update(Model model, @PathVariable String id) {
+        try {
             int pk = Integer.parseInt(id);
             Habitacion habitacion = service.retrieve(pk);
             model.addAttribute("habitacion", habitacion);
             return "habitacion/update";
-        }
-        catch(ServiceException ex){
+        } catch (ServiceException ex) {
             model.addAttribute("message", ex.getMessage());
             return "error";
         }
     }
-    
-    @RequestMapping(value="/update", method= RequestMethod.POST)
-    public String update(Model model, @ModelAttribute("habitacion") Habitacion formHabitacion){
-        try{
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public String update(Model model, @ModelAttribute("habitacion") Habitacion formHabitacion) {
+        try {
             Habitacion habitacion = service.retrieve(formHabitacion.getHabitacionId());
             habitacion.setEstado(formHabitacion.getEstado());
             service.update(habitacion);
             return "redirect:list.htm";
-        }
-        catch(ServiceException ex){
+        } catch (ServiceException ex) {
             model.addAttribute("message", ex.getMessage());
             return "error";
         }
     }
-    
-    @RequestMapping(value="/delete/{id}", method= RequestMethod.GET)
-    public String delete(Model model, @PathVariable String id){
-        try{
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+    public String delete(Model model, @PathVariable String id) {
+        try {
             int pk = Integer.parseInt(id);
             Habitacion habitacion = service.retrieve(pk);
             model.addAttribute("habitacion", habitacion);
             return "habitacion/delete";
-        }
-        catch(ServiceException ex){
+        } catch (ServiceException ex) {
             model.addAttribute("message", ex.getMessage());
             return "error";
         }
     }
-    
-    @RequestMapping(value="/delete", method= RequestMethod.POST)
-    public String delete(Model model, @ModelAttribute("habitacion") Habitacion habitacion){
-        try{
+
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public String delete(Model model, @ModelAttribute("habitacion") Habitacion habitacion) {
+        try {
             service.delete(habitacion.getHabitacionId());
             return "redirect:list.htm";
-        }
-        catch(ServiceException ex){
+        } catch (ServiceException ex) {
             model.addAttribute("message", ex.getMessage());
             return "error";
         }

@@ -44,7 +44,7 @@
                         <a class="nav-link" href="${pageContext.request.contextPath}/habitacion/list.htm">Habitaciones</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/reservacion/list.htm">Categorías</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/categoria/list.htm">Categorías</a>
                     </li> 
                     <li class="nav-item">
                         <a class="nav-link" href="${pageContext.request.contextPath}/usuario/list.htm">Usuarios</a>
@@ -63,7 +63,7 @@
                     <th>Fecha de Salida</th>
                     <th>Estado</th>
                     <th>
-                        <a> <i class="fa fa-plus" style="font-size:20px;color:blue" href="${pageContext.request.contextPath}/reservacion/create.htm"></i></a>
+                        <a <i class="fa fa-plus" style="font-size:20px;color:blue" href="${pageContext.request.contextPath}/reservacion/create.htm"></i></a>
                     </th>
                 </tr>
             </thead>
@@ -74,7 +74,7 @@
                             ${reservacion.getUsuarioId().getNombre()}
                         </td>
                         <td>
-                            ${reservacion.getHabitacionId()}
+                            ${reservacion.getHabitacionId().getNumeracion()}
                         </td>
                         <td>
                             ${reservacion.getFechaEntradaMostrar()}

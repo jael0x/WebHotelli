@@ -31,7 +31,7 @@
         </div>
 
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-            <a> class="navbar-brand" href="${pageContext.request.contextPath}/index.htm">Inicio</a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/index.htm">Inicio</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -62,7 +62,8 @@
                     <th>Precio por Usuario</th>
                     <th>Usuarios M&aacute;ximos</th>
                     <th>
-                        <a> <i class="fa fa-plus" style="font-size:20px;color:blue" href="${pageContext.request.contextPath}/categoria/create.htm"></i></a>
+                        <a class="btn btn-primary btn-block" href="${pageContext.request.contextPath}/categoria/create.htm">
+                            <i class="fa fa-plus" style="font-size:20px;color:white"></i></a>
                     </th>
                 </tr>
             </thead>
@@ -82,20 +83,20 @@
                             ${categoria.getMaxUsuarios()}
                         </td>
                         <td>
-                            <a> <i class="fa fa-eye" style="font-size:20px;color:black" 
-                                   href="${pageContext.request.contextPath}/categoria/retrieve/${categoria.getCategoriaId()}.htm"></i></a> |
-                            <a> <i class="fa fa-edit" style="font-size:20px;color:orange" 
-                                   href="${pageContext.request.contextPath}/categoria/update/${categoria.getCategoriaId()}.htm"></i></a>|
-                            <a> <i class="fa fa-trash" style="font-size:20px;color:red" 
-                                   href="${pageContext.request.contextPath}/categoria/delete/${categoria.getCategoriaId()}.htm"></i></a>       
+                            <a class="btn btn-success" href="${pageContext.request.contextPath}/categoria/retrieve/${categoria.getCategoriaId()}.htm">
+                                <i class="fa fa-eye" style="font-size:15px;color:white"></i></a>
+                            <a class="btn btn-warning" href="${pageContext.request.contextPath}/categoria/update/${categoria.getCategoriaId()}.htm">
+                                <i class="fa fa-edit" style="font-size:15px;color:white"></i></a>
+                            <a class="btn btn-danger" href="${pageContext.request.contextPath}/categoria/delete/${categoria.getCategoriaId()}.htm">
+                                <i class="fa fa-trash" style="font-size:15px;" ></i></a>       
 
                         </td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
-        <button type="reset">
-            <a href="${pageContext.request.contextPath}/index.htm" style="text-decoration: none; color: black">Atr&aacute;s</a>
-        </button>
+        <br>
+        <a class="btn btn-secondary" href="${pageContext.request.contextPath}/index.htm">
+            <i class="fa fa-angle-double-left" style="font-size:15px;" ></i> Atr&aacute;s</a>
     </body>
 </html>
