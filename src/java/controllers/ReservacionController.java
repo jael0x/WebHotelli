@@ -101,25 +101,39 @@ public class ReservacionController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(Model model, @ModelAttribute("reservacion") Reservacion reservacion) {
         try {
-            Calendar fechaEntrada = Calendar.getInstance();
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar fechaEntrada = Calendar.getInstance();
+            Calendar fechaSalida = Calendar.getInstance();
+            Date fechaActual = new Date();
+
             fechaEntrada.setTime(format.parse(reservacion.getStrFechaEntrada()));
             
-            Calendar fechaSalida = Calendar.getInstance();
-            fechaSalida.setTime(fechaEntrada.getTime());
-            fechaSalida.add(Calendar.DATE, 7);
-            
-            Usuario usuario = srvUsuario.retrieve(reservacion.getIdusuario());
-            
-            Habitacion habitacion = srvHabitacion.retrieve(reservacion.getIdhabitacion());
-            
+            //Pendiente, En Proceso, Finalizada
+            if (!reservacion.getStrFechaSalida().isEmpty()) {
+                fechaSalida.setTime(format.parse(reservacion.getStrFechaSalida()));
+                if(fechaEntrada.getTime().after(fechaActual)){
+                    reservacion.setEstado(1);
+                }else{
+                    if(fechaSalida.getTime().after(fechaActual)){
+                        reservacion.setEstado(2);
+                    }else{
+                        reservacion.setEstado(3);
+                    }
+                }
+            } else {
+                fechaSalida.setTime(fechaEntrada.getTime());
+                fechaSalida.add(Calendar.DATE, 7);
+                reservacion.setEstado(1);
+            }
+
             reservacion.setFechaEntrada(fechaEntrada.getTime());
             reservacion.setFechaSalida(fechaSalida.getTime());
-            reservacion.setEstado(2);
-            //Pendiente, En Proceso, Finalizada
+
+            Usuario usuario = srvUsuario.retrieve(reservacion.getIdusuario());
+            Habitacion habitacion = srvHabitacion.retrieve(reservacion.getIdhabitacion());
             reservacion.setHabitacionId(habitacion);
             reservacion.setUsuarioId(usuario);
-            
+
             service.create(reservacion);
             return "redirect:list.htm";
         } catch (ParseException | ServiceException ex) {
