@@ -115,7 +115,7 @@ public class ReservacionController {
             
             reservacion.setFechaEntrada(fechaEntrada.getTime());
             reservacion.setFechaSalida(fechaSalida.getTime());
-            reservacion.setEstado(1);
+            reservacion.setEstado(2);
             //Pendiente, En Proceso, Finalizada
             reservacion.setHabitacionId(habitacion);
             reservacion.setUsuarioId(usuario);
