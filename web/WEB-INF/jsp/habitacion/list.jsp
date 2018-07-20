@@ -40,7 +40,7 @@
                         <a class="nav-link" href="${pageContext.request.contextPath}/reservacion/list.htm">Reservaciones</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/habitacion/list.htm">Habitaciones</a>
+                        <a class="nav-link active" href="${pageContext.request.contextPath}/habitacion/list.htm">Habitaciones</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="${pageContext.request.contextPath}/categoria/list.htm">Categorías</a>
@@ -60,7 +60,9 @@
                     <th>Categor&iacute;a</th>
                     <th>Estado</th>
                     <th>
-                        <a href="${pageContext.request.contextPath}/habitacion/create.htm">Crear</a>
+                        <a class="btn btn-primary btn-block" href="${pageContext.request.contextPath}/habitacion/create.htm">
+                            <i class="fa fa-plus" style="font-size:20px;color:white"></i></a>
+                        
                     </th>
                 </tr>
             </thead>
@@ -80,16 +82,21 @@
                             ${habitacion.getStrEstado()}
                         </td>
                         <td>
-                            <a href="${pageContext.request.contextPath}/habitacion/retrieve/${habitacion.getHabitacionId()}.htm">Ver</a> |
-                            <a href="${pageContext.request.contextPath}/habitacion/update/${habitacion.getHabitacionId()}.htm">Actualizar</a> |
-                            <a href="${pageContext.request.contextPath}/habitacion/delete/${habitacion.getHabitacionId()}.htm">Eliminar</a>
+                             <a class="btn btn-success" href="${pageContext.request.contextPath}/habitacion/retrieve/${habitacion.getHabitacionId()}.htm">
+                                <i class="fa fa-eye" style="font-size:15px;color:white"></i></a>
+                            <a class="btn btn-warning" href="${pageContext.request.contextPath}/habitacion/update/${habitacion.getHabitacionId()}.htm">
+                                <i class="fa fa-edit" style="font-size:15px;color:white"></i></a>
+                            <a class="btn btn-danger" href="${pageContext.request.contextPath}/habitacion/delete/${habitacion.getHabitacionId()}.htm">
+                                <i class="fa fa-trash" style="font-size:15px;" ></i></a>       
+                           
+                          
                         </td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
-        <button type="reset">
-            <a href="${pageContext.request.contextPath}/index.htm" style="text-decoration: none; color: black">Atr&aacute;s</a>
-        </button>
+            <a class="btn btn-secondary" href="${pageContext.request.contextPath}/index.htm">
+            <i class="fa fa-angle-double-left" style="font-size:15px;" ></i> Atr&aacute;s</a>
+       
     </body>
 </html>
