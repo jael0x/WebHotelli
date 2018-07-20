@@ -52,6 +52,7 @@
                 </ul>
             </div>  
         </nav>
+                    <h1>Registrar Reservaci&oacute;n</h1>
         <hr>
         <frm:form action="${pageContext.request.contextPath}/reservacion/create.htm" method="POST" commandName="reservacion">
             <fieldset class="container">
@@ -115,10 +116,14 @@
                     </div>
                 </div>
             </fieldset>
-            <button type="reset">
-                <a href="${pageContext.request.contextPath}/reservacion/list.htm" style="text-decoration: none; color: black">Cancelar</a>
-            </button>
-            <button type="submit">Guardar</button>
+                    
+                    <a class="btn btn-secondary" href="${pageContext.request.contextPath}/reservacion/list.htm">
+                    <i class="fa fa-times" style="font-size:25px;" ></i></a>
+                    
+                    <button type="submit" class="btn btn-primary" href="${pageContext.request.contextPath}/reservacion/list.htm">
+                    <i  class="fa fa-floppy-o " style="font-size:25px;" ></i></button>
+                    
+            
         </div>
     </frm:form>
 </body>

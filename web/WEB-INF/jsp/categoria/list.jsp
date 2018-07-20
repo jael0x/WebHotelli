@@ -44,7 +44,7 @@
                         <a class="nav-link" href="${pageContext.request.contextPath}/habitacion/list.htm">Habitaciones</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/categoria/list.htm">Categorías</a>
+                        <a class="nav-link active" href="${pageContext.request.contextPath}/categoria/list.htm">Categorías</a>
                     </li> 
                     <li class="nav-item">
                         <a class="nav-link" href="${pageContext.request.contextPath}/usuario/list.htm">Usuarios</a>

@@ -21,6 +21,7 @@
             background: #aaa;
                     }
         </style>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>Web Hotelli</title>
     </head>
     <body>
@@ -43,10 +44,10 @@
             <a class="nav-link" href="${pageContext.request.contextPath}/habitacion/list.htm">Habitaciones</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="${pageContext.request.contextPath}/usuario/list.htm">Categorías</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/categoria/list.htm">Categorías</a>
         </li> 
         <li class="nav-item">
-            <a class="nav-link" href="${pageContext.request.contextPath}/usuario/list.htm">Usuarios</a>
+            <a class="nav-link active" href="${pageContext.request.contextPath}/usuario/list.htm">Usuarios</a>
         </li> 
         </ul>
         </div>  
@@ -60,7 +61,10 @@
                     <th>C&eacute;dula</th>
                     <th>Tel&eacute;fono</th>
                     <th>
-                        <a href="${pageContext.request.contextPath}/usuario/create.htm">Crear</a>
+                        <a class="btn btn-primary btn-block" href="${pageContext.request.contextPath}/usuario/create.htm">
+                            <i class="fa fa-plus" style="font-size:20px;color:white"></i></a>
+                        
+                        
                     </th>
                 </tr>
             </thead>
@@ -77,16 +81,21 @@
                             ${usuario.getTelefono()}
                         </td>
                         <td>
-                            <a href="${pageContext.request.contextPath}/usuario/retrieve/${usuario.getUsuarioId()}.htm">Ver</a> |
-                            <a href="${pageContext.request.contextPath}/usuario/update/${usuario.getUsuarioId()}.htm">Editar</a> |
-                            <a href="${pageContext.request.contextPath}/usuario/delete/${usuario.getUsuarioId()}.htm">Eliminar</a>
+                            
+                             <a class="btn btn-success" href="${pageContext.request.contextPath}/usuario/retrieve/${usuario.getUsuarioId()}.htm">
+                                <i class="fa fa-eye" style="font-size:15px;color:white"></i></a>
+                            <a class="btn btn-warning" href="${pageContext.request.contextPath}/usuario/update/${usuario.getUsuarioId()}.htm">
+                                <i class="fa fa-edit" style="font-size:15px;color:white"></i></a>
+                            <a class="btn btn-danger" href="${pageContext.request.contextPath}/usuario/delete/${usuario.getUsuarioId()}.htm">
+                                <i class="fa fa-trash" style="font-size:15px;" ></i></a>       
+                            
                         </td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
-        <button type="reset">
-            <a href="${pageContext.request.contextPath}/index.htm" style="text-decoration: none; color: black">Atr&aacute;s</a>
-        </button>
+            <a class="btn btn-secondary" href="${pageContext.request.contextPath}/index.htm">
+            <i class="fa fa-angle-double-left" style="font-size:15px;" ></i> Atr&aacute;s</a>
+        
     </body>
 </html>
