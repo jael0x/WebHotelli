@@ -81,6 +81,9 @@ public class Reservacion implements Serializable {
     @Transient
     private int idcategoria;
 
+    @Transient
+    private String strEstado;
+
     public String getStrFechaEntrada() {
         return strFechaEntrada;
     }
@@ -107,6 +110,28 @@ public class Reservacion implements Serializable {
         return sdf.format(fechaSalida);
     }
 
+    public String getStrEstado() {
+        switch (this.estado) {
+            case 1:
+                this.strEstado = "Pendiente";
+                break;
+            case 2:
+                this.strEstado = "En Proceso";
+                break;
+            case 3:
+                this.strEstado = "Finalizada";
+                break;
+            default:
+                this.strEstado = "Sin Estado";
+                break;
+        }
+        return strEstado;
+    }
+
+    public void setStrEstado(String strEstado) {
+        this.strEstado = strEstado;
+    }
+
     public int getIdusuario() {
         return idusuario;
     }
@@ -130,7 +155,7 @@ public class Reservacion implements Serializable {
     public void setIdcategoria(int idcategoria) {
         this.idcategoria = idcategoria;
     }
-    
+
     public Reservacion() {
     }
 
@@ -223,5 +248,5 @@ public class Reservacion implements Serializable {
     public String toString() {
         return "models.Reservacion[ reservacionId=" + reservacionId + " ]";
     }
-    
+
 }

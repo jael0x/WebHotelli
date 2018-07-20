@@ -68,6 +68,7 @@ public class ReservacionController {
         List<Habitacion> habitaciones = srvHabitacion.list();
         Comparator<Habitacion> comp = Comparator.comparing(Habitacion::getPlanta);
         comp = comp.thenComparing(habitacion -> habitacion.getCategoriaId().getCategoriaId());
+        comp = comp.thenComparing(Habitacion::getEstado);
         comp = comp.thenComparing(Habitacion::getNumeracion);
         habitaciones.sort(comp);
         return habitaciones;
@@ -105,25 +106,31 @@ public class ReservacionController {
             Calendar fechaEntrada = Calendar.getInstance();
             Calendar fechaSalida = Calendar.getInstance();
             Date fechaActual = new Date();
+            if (!reservacion.getStrFechaEntrada().isEmpty()) {
+                fechaEntrada.setTime(format.parse(reservacion.getStrFechaEntrada()));
+            } else {
+                fechaEntrada.setTime(fechaActual);
+            }
 
-            fechaEntrada.setTime(format.parse(reservacion.getStrFechaEntrada()));
-            
             //Pendiente, En Proceso, Finalizada
             if (!reservacion.getStrFechaSalida().isEmpty()) {
                 fechaSalida.setTime(format.parse(reservacion.getStrFechaSalida()));
-                if(fechaEntrada.getTime().after(fechaActual)){
+                if (fechaEntrada.getTime().after(fechaActual)) {
                     reservacion.setEstado(1);
-                }else{
-                    if(fechaSalida.getTime().after(fechaActual)){
+                } else {
+                    if (fechaSalida.getTime().after(fechaActual)) {
                         reservacion.setEstado(2);
-                    }else{
+                    } else {
                         reservacion.setEstado(3);
                     }
                 }
             } else {
                 fechaSalida.setTime(fechaEntrada.getTime());
-                fechaSalida.add(Calendar.DATE, 7);
-                reservacion.setEstado(1);
+                if (fechaEntrada.getTime().after(fechaActual)) {
+                    reservacion.setEstado(1);
+                } else {
+                    reservacion.setEstado(3);
+                }
             }
 
             reservacion.setFechaEntrada(fechaEntrada.getTime());
@@ -134,6 +141,19 @@ public class ReservacionController {
             reservacion.setHabitacionId(habitacion);
             reservacion.setUsuarioId(usuario);
 
+            switch (reservacion.getEstado()) {
+                case 1:
+                    habitacion.setEstado(1);
+                    break;
+                case 2:
+                    habitacion.setEstado(2);
+                    break;
+                case 3:
+                    habitacion.setEstado(1);
+                    break;
+            }
+            
+            srvHabitacion.update(habitacion);
             service.create(reservacion);
             return "redirect:list.htm";
         } catch (ParseException | ServiceException ex) {
@@ -143,7 +163,9 @@ public class ReservacionController {
     }
 
     @RequestMapping(value = "/retrieve/{id}", method = RequestMethod.GET)
-    public String retrieve(Model model, @PathVariable String id) {
+    public String retrieve(Model model,
+            @PathVariable String id
+    ) {
         try {
             int pk = Integer.parseInt(id);
             Reservacion reservacion = service.retrieve(pk);
@@ -156,7 +178,9 @@ public class ReservacionController {
     }
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.GET)
-    public String update(Model model, @PathVariable String id) {
+    public String update(Model model,
+            @PathVariable String id
+    ) {
         try {
             int pk = Integer.parseInt(id);
             Reservacion reservacion = service.retrieve(pk);
@@ -169,7 +193,9 @@ public class ReservacionController {
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public String update(Model model, @ModelAttribute("reservacion") Reservacion reservacion) {
+    public String update(Model model,
+            @ModelAttribute("reservacion") Reservacion reservacion
+    ) {
         try {
             service.update(reservacion);
             return "redirect:list.htm";
@@ -180,7 +206,9 @@ public class ReservacionController {
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public String delete(Model model, @PathVariable String id) {
+    public String delete(Model model,
+            @PathVariable String id
+    ) {
         try {
             int pk = Integer.parseInt(id);
             Reservacion reservacion = service.retrieve(pk);
@@ -193,7 +221,9 @@ public class ReservacionController {
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public String delete(Model model, @ModelAttribute("reservacion") Reservacion reservacion) {
+    public String delete(Model model,
+            @ModelAttribute("reservacion") Reservacion reservacion
+    ) {
         try {
             service.delete(reservacion.getReservacionId());
             return "redirect:list.htm";

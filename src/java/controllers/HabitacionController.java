@@ -45,6 +45,7 @@ public class HabitacionController {
             List<Habitacion> habitaciones = service.list();
             Comparator<Habitacion> comp = Comparator.comparing(Habitacion::getPlanta);
             comp = comp.thenComparing(habitacion -> habitacion.getCategoriaId().getCategoriaId());
+            comp = comp.thenComparing(Habitacion::getEstado);
             comp = comp.thenComparing(Habitacion::getNumeracion);
             habitaciones.sort(comp);
             model.addAttribute("habitaciones", habitaciones);

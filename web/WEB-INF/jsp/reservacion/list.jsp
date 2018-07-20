@@ -85,7 +85,7 @@
                             ${reservacion.getFechaSalidaMostrar()}
                         </td>
                         <td>
-                            ${reservacion.getEstado()}
+                            ${reservacion.getStrEstado()}
                         </td>
                         <td>
                             <%-- 
