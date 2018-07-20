@@ -68,6 +68,9 @@
                         <label>Fecha de Entrada: </label>
                         <frm:input type="date" path="strFechaEntrada"/>
                         <br>
+                        <label>Fecha de Salida: </label>
+                        <frm:input type="date" path="strFechaSalida"/>
+                        <br>
                         <label>Número de Usuarios: </label>
                         <frm:input type="number" 
                                    path="numUsuarios" 
@@ -83,7 +86,6 @@
                                         <c:when test="${habitacion.getEstado() == 1}">
                                             <span class="btn btn-info">
                                                 <label>${habitacion.getNumeracion()}</label>
-                                                <!--<input path="idhabitacion" type="radio" value="${habitacion.getHabitacionId()}">-->
                                                 <frm:radiobutton path="idhabitacion" value="${habitacion.getHabitacionId()}" />
                                                 <p>${habitacion.getCategoriaId().getNombre()}</p>
                                             </span>

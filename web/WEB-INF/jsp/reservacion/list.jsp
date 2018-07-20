@@ -86,13 +86,12 @@
                             ${reservacion.getEstado()}
                         </td>
                         <td>
-                            <a> <i class="fa fa-eye" style="font-size:20px;color:black" 
-                                   href="${pageContext.request.contextPath}/reservacion/retrieve/${reservacion.getReservacionId()}.htm"></i></a> |
-                            <a> <i class="fa fa-edit" style="font-size:20px;color:orange" 
-                                   href="${pageContext.request.contextPath}/reservacion/update/${reservacion.getReservacionId()}.htm"></i></a>|
-                            <a> <i class="fa fa-trash" style="font-size:20px;color:red" 
-                                   href="${pageContext.request.contextPath}/reservacion/delete/${reservacion.getReservacionId()}.htm"></i></a>       
-
+                            <a href="${pageContext.request.contextPath}/reservacion/retrieve/${reservacion.getReservacionId()}.htm">
+                                <i class="fa fa-eye" style="font-size:20px;color:black"></i></a>
+                            <a href="${pageContext.request.contextPath}/reservacion/update/${reservacion.getReservacionId()}.htm">
+                                <i class="fa fa-edit" style="font-size:20px;color:orange"></i></a>
+                            <a href="${pageContext.request.contextPath}/reservacion/delete/${reservacion.getReservacionId()}.htm">
+                                <i class="fa fa-trash" style="font-size:20px;color:red"></i></a>
                         </td>
                     </tr>
                 </c:forEach>
