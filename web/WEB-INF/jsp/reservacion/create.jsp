@@ -77,6 +77,9 @@
                                    path="numUsuarios" 
                                    min="1"
                                    max=""/>
+                        <br>
+                        <label>Pagada: </label>
+                        <frm:checkbox path="pagada"/>
                     </div>
                     <div class="col btn-group-toggle" data-toggle="buttons">
                         <c:forEach items="${listPlantas}" var="planta">

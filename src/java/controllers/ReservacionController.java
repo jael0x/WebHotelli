@@ -102,6 +102,7 @@ public class ReservacionController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(Model model, @ModelAttribute("reservacion") Reservacion reservacion) {
         try {
+            //Fecha Entrada, Salida
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             Calendar fechaEntrada = Calendar.getInstance();
             Calendar fechaSalida = Calendar.getInstance();
@@ -112,7 +113,7 @@ public class ReservacionController {
                 fechaEntrada.setTime(fechaActual);
             }
 
-            //Pendiente, En Proceso, Finalizada
+            //Pendiente, Alojamiento, Finalizada
             if (!reservacion.getStrFechaSalida().isEmpty()) {
                 fechaSalida.setTime(format.parse(reservacion.getStrFechaSalida()));
                 if (fechaEntrada.getTime().after(fechaActual)) {
@@ -132,7 +133,8 @@ public class ReservacionController {
                     reservacion.setEstado(3);
                 }
             }
-
+            
+            
             reservacion.setFechaEntrada(fechaEntrada.getTime());
             reservacion.setFechaSalida(fechaSalida.getTime());
 
@@ -140,7 +142,14 @@ public class ReservacionController {
             Habitacion habitacion = srvHabitacion.retrieve(reservacion.getIdhabitacion());
             reservacion.setHabitacionId(habitacion);
             reservacion.setUsuarioId(usuario);
-
+            
+            //Precio
+            float precioIni = habitacion.getCategoriaId().getPrecioInicial();
+            float precioUsu = habitacion.getCategoriaId().getPrecioUsuario();
+            int numUsu = reservacion.getNumUsuarios();
+            reservacion.setPrecio(precioIni+precioUsu*numUsu);
+            
+            //Disponible, Ocupada
             switch (reservacion.getEstado()) {
                 case 1:
                     habitacion.setEstado(1);

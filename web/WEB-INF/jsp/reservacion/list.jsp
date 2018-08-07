@@ -61,11 +61,12 @@
                     <th>Habitaci&oacute;n</th>
                     <th>Fecha de Entrada</th>
                     <th>Fecha de Salida</th>
+                    <th>Precio</th>
+                    <th>Pagada</th>
                     <th>Estado</th>
                     <th>
-                         <a class="btn btn-primary btn-block" href="${pageContext.request.contextPath}/reservacion/create.htm">
+                        <a class="btn btn-primary btn-block" href="${pageContext.request.contextPath}/reservacion/create.htm">
                             <i class="fa fa-plus" style="font-size:20px;color:white"></i></a>
-                       
                     </th>
                 </tr>
             </thead>
@@ -76,13 +77,26 @@
                             ${reservacion.getUsuarioId().getNombre()}
                         </td>
                         <td>
-                            ${reservacion.getHabitacionId().getNumeracion()}
+                            ${reservacion.getHabitacionId().getNumeracion()} ${reservacion.getHabitacionId().getCategoriaId().getNombre()}
                         </td>
                         <td>
                             ${reservacion.getFechaEntradaMostrar()}
                         </td>
                         <td>
                             ${reservacion.getFechaSalidaMostrar()}
+                        </td>
+                        <td>
+                            ${reservacion.getPrecio()}
+                        </td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${reservacion.getPagada()}">
+                                    <input type="checkbox" disabled checked>
+                                </c:when>    
+                                <c:otherwise>
+                                    <input type="checkbox" disabled>
+                                </c:otherwise>
+                            </c:choose>
                         </td>
                         <td>
                             ${reservacion.getStrEstado()}
@@ -101,7 +115,7 @@
                 </c:forEach>
             </tbody>
         </table>
-            <a class="btn btn-secondary" href="${pageContext.request.contextPath}/index.htm">
+        <a class="btn btn-secondary" href="${pageContext.request.contextPath}/index.htm">
             <i class="fa fa-angle-double-left" style="font-size:15px;" ></i> Atr&aacute;s</a>
-        </body>
+    </body>
 </html>

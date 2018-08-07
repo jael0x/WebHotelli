@@ -38,7 +38,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Reservacion.findByFechaEntrada", query = "SELECT r FROM Reservacion r WHERE r.fechaEntrada = :fechaEntrada")
     , @NamedQuery(name = "Reservacion.findByFechaSalida", query = "SELECT r FROM Reservacion r WHERE r.fechaSalida = :fechaSalida")
     , @NamedQuery(name = "Reservacion.findByNumUsuarios", query = "SELECT r FROM Reservacion r WHERE r.numUsuarios = :numUsuarios")
-    , @NamedQuery(name = "Reservacion.findByEstado", query = "SELECT r FROM Reservacion r WHERE r.estado = :estado")})
+    , @NamedQuery(name = "Reservacion.findByPrecio", query = "SELECT r FROM Reservacion r WHERE r.precio = :precio")
+    , @NamedQuery(name = "Reservacion.findByEstado", query = "SELECT r FROM Reservacion r WHERE r.estado = :estado")
+    , @NamedQuery(name = "Reservacion.findByPagada", query = "SELECT r FROM Reservacion r WHERE r.pagada = :pagada")})
 public class Reservacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -47,18 +49,29 @@ public class Reservacion implements Serializable {
     @Basic(optional = false)
     @Column(name = "reservacion_id")
     private Integer reservacionId;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "fecha_entrada")
     @Temporal(TemporalType.DATE)
     private Date fechaEntrada;
     @Column(name = "fecha_salida")
     @Temporal(TemporalType.DATE)
     private Date fechaSalida;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "num_usuarios")
-    private Integer numUsuarios;
+    private int numUsuarios;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "precio")
+    private Float precio;
     @Basic(optional = false)
     @NotNull
     @Column(name = "estado")
     private int estado;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "pagada")
+    private boolean pagada;
     @JoinColumn(name = "habitacion_id", referencedColumnName = "habitacion_id")
     @ManyToOne(optional = false)
     private Habitacion habitacionId;
@@ -116,7 +129,7 @@ public class Reservacion implements Serializable {
                 this.strEstado = "Pendiente";
                 break;
             case 2:
-                this.strEstado = "En Proceso";
+                this.strEstado = "Alojamiento";
                 break;
             case 3:
                 this.strEstado = "Finalizada";
@@ -163,9 +176,12 @@ public class Reservacion implements Serializable {
         this.reservacionId = reservacionId;
     }
 
-    public Reservacion(Integer reservacionId, int estado) {
+    public Reservacion(Integer reservacionId, Date fechaEntrada, int numUsuarios, int estado, boolean pagada) {
         this.reservacionId = reservacionId;
+        this.fechaEntrada = fechaEntrada;
+        this.numUsuarios = numUsuarios;
         this.estado = estado;
+        this.pagada = pagada;
     }
 
     public Integer getReservacionId() {
@@ -192,12 +208,20 @@ public class Reservacion implements Serializable {
         this.fechaSalida = fechaSalida;
     }
 
-    public Integer getNumUsuarios() {
+    public int getNumUsuarios() {
         return numUsuarios;
     }
 
-    public void setNumUsuarios(Integer numUsuarios) {
+    public void setNumUsuarios(int numUsuarios) {
         this.numUsuarios = numUsuarios;
+    }
+
+    public Float getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(Float precio) {
+        this.precio = precio;
     }
 
     public int getEstado() {
@@ -206,6 +230,14 @@ public class Reservacion implements Serializable {
 
     public void setEstado(int estado) {
         this.estado = estado;
+    }
+
+    public boolean getPagada() {
+        return pagada;
+    }
+
+    public void setPagada(boolean pagada) {
+        this.pagada = pagada;
     }
 
     public Habitacion getHabitacionId() {
@@ -248,5 +280,5 @@ public class Reservacion implements Serializable {
     public String toString() {
         return "models.Reservacion[ reservacionId=" + reservacionId + " ]";
     }
-
+    
 }
