@@ -7,12 +7,14 @@ package controllers;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import models.Categoria;
 import models.Habitacion;
 import models.Reservacion;
@@ -20,6 +22,7 @@ import models.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +31,8 @@ import services.HabitacionService;
 import services.ReservacionService;
 import services.ServiceException;
 import services.UsuarioService;
+import validators.NumUsuariosValidator;
+import validators.ReservacionValidator;
 
 /**
  *
@@ -45,6 +50,12 @@ public class ReservacionController {
 
     @Autowired
     private UsuarioService srvUsuario;
+
+    @Autowired
+    private ReservacionValidator validator;
+
+    @Autowired
+    private NumUsuariosValidator validUsuarios;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(Model model) {
@@ -100,72 +111,52 @@ public class ReservacionController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(Model model, @ModelAttribute("reservacion") Reservacion reservacion) {
+    public String create(Model model, @ModelAttribute("reservacion") Reservacion reservacion, BindingResult errors) {
         try {
-            //Fecha Entrada, Salida
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            Calendar fechaEntrada = Calendar.getInstance();
-            Calendar fechaSalida = Calendar.getInstance();
-            Date fechaActual = new Date();
-            if (!reservacion.getStrFechaEntrada().isEmpty()) {
-                fechaEntrada.setTime(format.parse(reservacion.getStrFechaEntrada()));
+            validator.validate(reservacion, errors);
+            if (errors.hasErrors()) {
+                model.addAttribute("reservacion", reservacion);
+                return "reservacion/create";
             } else {
-                fechaEntrada.setTime(fechaActual);
-            }
 
-            //Pendiente, Alojamiento, Finalizada
-            if (!reservacion.getStrFechaSalida().isEmpty()) {
-                fechaSalida.setTime(format.parse(reservacion.getStrFechaSalida()));
-                if (fechaEntrada.getTime().after(fechaActual)) {
-                    reservacion.setEstado(1);
+                Usuario usuario = srvUsuario.retrieve(reservacion.getIdusuario());
+                Habitacion habitacion = srvHabitacion.retrieve(reservacion.getIdhabitacion());
+                reservacion.setHabitacionId(habitacion);
+                reservacion.setUsuarioId(usuario);
+
+                validUsuarios.validate(reservacion, errors);
+                if (errors.hasErrors()) {
+                    model.addAttribute("reservacion", reservacion);
+                    return "reservacion/create";
                 } else {
-                    if (fechaSalida.getTime().after(fechaActual)) {
-                        reservacion.setEstado(2);
-                    } else {
-                        reservacion.setEstado(3);
+                    //Precio
+                    float precioIni = habitacion.getCategoriaId().getPrecioInicial();
+                    float precioUsu = habitacion.getCategoriaId().getPrecioUsuario();
+                    int numUsu = reservacion.getNumUsuarios();
+                    
+                    long days = TimeUnit.DAYS.convert(Math.abs(reservacion.getFechaEntrada().getTime() - reservacion.getFechaSalida().getTime()), TimeUnit.MILLISECONDS);
+ 
+                    reservacion.setPrecio((precioIni + precioUsu * numUsu)* days);
+
+                    //Disponible, Ocupada
+                    switch (reservacion.getEstado()) {
+                        case 1:
+                            habitacion.setEstado(1);
+                            break;
+                        case 2:
+                            habitacion.setEstado(2);
+                            break;
+                        case 3:
+                            habitacion.setEstado(1);
+                            break;
                     }
-                }
-            } else {
-                fechaSalida.setTime(fechaEntrada.getTime());
-                if (fechaEntrada.getTime().after(fechaActual)) {
-                    reservacion.setEstado(1);
-                } else {
-                    reservacion.setEstado(3);
-                }
-            }
-            
-            
-            reservacion.setFechaEntrada(fechaEntrada.getTime());
-            reservacion.setFechaSalida(fechaSalida.getTime());
 
-            Usuario usuario = srvUsuario.retrieve(reservacion.getIdusuario());
-            Habitacion habitacion = srvHabitacion.retrieve(reservacion.getIdhabitacion());
-            reservacion.setHabitacionId(habitacion);
-            reservacion.setUsuarioId(usuario);
-            
-            //Precio
-            float precioIni = habitacion.getCategoriaId().getPrecioInicial();
-            float precioUsu = habitacion.getCategoriaId().getPrecioUsuario();
-            int numUsu = reservacion.getNumUsuarios();
-            reservacion.setPrecio(precioIni+precioUsu*numUsu);
-            
-            //Disponible, Ocupada
-            switch (reservacion.getEstado()) {
-                case 1:
-                    habitacion.setEstado(1);
-                    break;
-                case 2:
-                    habitacion.setEstado(2);
-                    break;
-                case 3:
-                    habitacion.setEstado(1);
-                    break;
+                    srvHabitacion.update(habitacion);
+                    service.create(reservacion);
+                    return "redirect:list.htm";
+                }
             }
-            
-            srvHabitacion.update(habitacion);
-            service.create(reservacion);
-            return "redirect:list.htm";
-        } catch (ParseException | ServiceException ex) {
+        } catch (ServiceException ex) {
             model.addAttribute("message", ex.getMessage());
             return "error";
         }

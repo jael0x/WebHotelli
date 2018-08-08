@@ -52,81 +52,101 @@
                 </ul>
             </div>  
         </nav>
-                    <h1>Registrar Reservaci&oacute;n</h1>
+        <h1>Registrar Reservaci&oacute;n</h1>
         <hr>
         <frm:form action="${pageContext.request.contextPath}/reservacion/create.htm" method="POST" commandName="reservacion">
             <fieldset class="container">
                 <div class="row">
                     <div class="col">
-                        <label>Usuario: </label>
-                        <frm:select path="idusuario">
-                            <frm:option value="0" label="--Seleccione--"/>
-                            <frm:options items="${listUsuario}"
-                                         itemLabel="nombre"
-                                         itemValue="usuarioId"/>
-                        </frm:select>
-                        <br>
-                        <label>Fecha de Entrada: </label>
-                        <frm:input type="date" path="strFechaEntrada"/>
-                        <br>
-                        <label>Fecha de Salida: </label>
-                        <frm:input type="date" path="strFechaSalida"/>
-                        <br>
-                        <label>Número de Usuarios: </label>
-                        <frm:input type="number" 
-                                   path="numUsuarios" 
-                                   min="1"
-                                   max=""/>
-                        <br>
-                        <label>Pagada: </label>
-                        <frm:checkbox path="pagada"/>
+                        <div>
+                            <label>Usuario: </label>
+                            <frm:select path="idusuario">
+                                <frm:option value="0" label="--Seleccione--"/>
+                                <frm:options items="${listUsuario}"
+                                             itemLabel="nombre"
+                                             itemValue="usuarioId"/>
+                            </frm:select>
+                        </div>
+                        <small><frm:errors path="idusuario" class="text-danger"/></small>
+                        <div>
+                            <label>Fecha de Entrada: </label>
+                            <frm:input type="date" path="strFechaEntrada"/>
+                            <br>
+                            <label>Fecha de Salida: </label>
+                            <frm:input type="date" path="strFechaSalida"/>
+                        </div>
+                        <small><frm:errors path="strFechaSalida" class="text-danger"/></small>
+                        <div>
+                            <label>Número de Usuarios: </label>
+                            <frm:input type="number" 
+                                       path="numUsuarios" 
+                                       min="1"
+                                       max=""/>
+                        </div>
+                        <small><frm:errors path="numUsuarios" class="text-danger"/></small>
+                        <div>
+                            <label>Pagada: </label>
+                            <frm:checkbox path="pagada"/>
+                        </div>
                     </div>
-                    <div class="col btn-group-toggle" data-toggle="buttons">
-                        <c:forEach items="${listPlantas}" var="planta">
-                            <h5>Planta ${planta.intValue()}</h5>
-                            <c:forEach items="${listHabitaciones}" var="habitacion">
-                                <c:if test = "${habitacion.getPlanta() == planta.intValue()}">
-                                    <c:choose>
-                                        <c:when test="${habitacion.getEstado() == 1}">
-                                            <span class="btn btn-info">
-                                                <label>${habitacion.getNumeracion()}</label>
-                                                <frm:radiobutton path="idhabitacion" value="${habitacion.getHabitacionId()}" />
-                                                <p>${habitacion.getCategoriaId().getNombre()}</p>
-                                            </span>
-                                        </c:when>    
-                                        <c:otherwise>
-                                            <c:choose>
-                                                <c:when test="${habitacion.getEstado() == 2}">
-                                                    <span class="btn btn-secondary">
-                                                        <label>${habitacion.getNumeracion()}</label>
-                                                        <input type="radio" disabled checked>
-                                                        <p>${habitacion.getCategoriaId().getNombre()}</p>
-                                                    </span>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <span class="btn btn-danger">
-                                                        <label disabled>${habitacion.getNumeracion()}</label>
-                                                        <input type="radio" disabled>
-                                                        <p>${habitacion.getCategoriaId().getNombre()}</p>
-                                                    </span>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </c:if>
+                    <div class="col">
+                        <div class="col btn-group-toggle" data-toggle="buttons">
+                            <c:forEach items="${listPlantas}" var="planta">
+                                <h5>Planta ${planta.intValue()}</h5>
+                                <c:forEach items="${listHabitaciones}" var="habitacion">
+                                    <c:if test = "${habitacion.getPlanta() == planta.intValue()}">
+                                        <c:choose>
+                                            <c:when test="${habitacion.getEstado() == 1}">
+                                                <c:choose>
+                                                    <c:when test="${reservacion.getIdhabitacion() == habitacion.getHabitacionId()}">
+                                                        <span class="btn btn-success">
+                                                            <label>${habitacion.getNumeracion()}</label>
+                                                            <frm:radiobutton path="idhabitacion" value="${habitacion.getHabitacionId()}"/>
+                                                            <p>${habitacion.getCategoriaId().getNombre()}</p>
+                                                        </span>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <span class="btn btn-info">
+                                                            <label>${habitacion.getNumeracion()}</label>
+                                                            <frm:radiobutton path="idhabitacion" value="${habitacion.getHabitacionId()}" />
+                                                            <p>${habitacion.getCategoriaId().getNombre()}</p>
+                                                        </span>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:when>    
+                                            <c:otherwise>
+                                                <c:choose>
+                                                    <c:when test="${habitacion.getEstado() == 2}">
+                                                        <span class="btn btn-secondary">
+                                                            <label>${habitacion.getNumeracion()}</label>
+                                                            <input type="radio" disabled checked>
+                                                            <p>${habitacion.getCategoriaId().getNombre()}</p>
+                                                        </span>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <span class="btn btn-danger">
+                                                            <label disabled>${habitacion.getNumeracion()}</label>
+                                                            <input type="radio" disabled>
+                                                            <p>${habitacion.getCategoriaId().getNombre()}</p>
+                                                        </span>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </c:if>
+                                </c:forEach>
                             </c:forEach>
-                        </c:forEach>
+                        </div>
+                        <small><frm:errors path="idhabitacion" class="text-danger"/></small>
                     </div>
                 </div>
             </fieldset>
-                    
-                    <a class="btn btn-secondary" href="${pageContext.request.contextPath}/reservacion/list.htm">
-                    <i class="fa fa-times" style="font-size:25px;" ></i></a>
-                    
-                    <button type="submit" class="btn btn-primary" href="${pageContext.request.contextPath}/reservacion/list.htm">
-                    <i  class="fa fa-floppy-o " style="font-size:25px;" ></i></button>
-                    
-            
+
+            <a class="btn btn-secondary" href="${pageContext.request.contextPath}/reservacion/list.htm">
+                <i class="fa fa-times" style="font-size:25px;" ></i></a>
+
+            <button type="submit" class="btn btn-primary" href="${pageContext.request.contextPath}/reservacion/list.htm">
+                <i  class="fa fa-floppy-o " style="font-size:25px;" ></i></button>
         </div>
     </frm:form>
 </body>
