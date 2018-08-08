@@ -62,8 +62,30 @@ public class ReservacionController {
         try {
             List<Reservacion> reservaciones = service.list();
             model.addAttribute("reservaciones", reservaciones);
+                        Reservacion reservacion = new Reservacion();
+            model.addAttribute("reservacion", reservacion);
             return "reservacion/list";
         } catch (ServiceException ex) {
+            model.addAttribute("message", ex.getMessage());
+            return "error";
+        }
+    }
+    
+        @RequestMapping(value = "/reportHab", method = RequestMethod.GET)
+    public String reportHab(Model model) {
+        try {
+            return "reservacion/reportHab";
+        } catch (Exception ex) {
+            model.addAttribute("message", ex.getMessage());
+            return "error";
+        }
+    }
+    
+        @RequestMapping(value = "/reportRev", method = RequestMethod.GET)
+    public String reportRev(Model model) {
+        try {
+            return "reservacion/reportRev";
+        } catch (Exception ex) {
             model.addAttribute("message", ex.getMessage());
             return "error";
         }

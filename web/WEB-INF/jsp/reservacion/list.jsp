@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="frm" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -116,6 +117,26 @@
             </tbody>
         </table>
         <a class="btn btn-secondary" href="${pageContext.request.contextPath}/index.htm">
-            <i class="fa fa-angle-double-left" style="font-size:15px;" ></i> Atr&aacute;s</a>
+            <i class="fa fa-angle-double-left" style="font-size:15px;" ></i> Atr&aacute;s</a>.
+        <div class="row container">
+            <frm:form action="${pageContext.request.contextPath}/reservacion/reportHab.htm" method="GET" commandName="reservacion">
+                <div class="col">
+                    <h3>Reporte de Habitaciones</h3>
+                    <label>Fecha: </label>
+                    <frm:input type="date" path="strFechaHabitaciones"/>
+                </div>
+            </frm:form>
+            <frm:form action="${pageContext.request.contextPath}/reservacion/reportRev.htm" method="GET" commandName="reservacion">
+                <div class="col">
+                    <h3>Reporte de Reservaciones</h3>
+                    <label>Fecha inicial: </label>
+                    <frm:input type="date" path="strFechaInicial"/>
+                    <label>Fecha final: </label>
+                    <frm:input type="date" path="strFechaFinal"/>
+                    <button type="submit" class="btn btn-primary" href="${pageContext.request.contextPath}/reservacion/reportRev.htm">
+                        <i  class="fa fa-file-alt" style="font-size:25px;" ></i></button>
+                </div>
+            </frm:form>   
+        </div>
     </body>
 </html>

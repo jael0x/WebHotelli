@@ -78,6 +78,15 @@ public class Reservacion implements Serializable {
     @JoinColumn(name = "usuario_id", referencedColumnName = "usuario_id")
     @ManyToOne(optional = false)
     private Usuario usuarioId;
+    
+    @Transient
+    private String strFechaHabitaciones;
+
+    @Transient
+    private String strFechaInicial;
+
+    @Transient
+    private String strFechaFinal;
 
     @Transient
     private String strFechaEntrada;
@@ -96,6 +105,32 @@ public class Reservacion implements Serializable {
 
     @Transient
     private String strEstado;
+
+    public String getStrFechaHabitaciones() {
+        return strFechaHabitaciones;
+    }
+
+    public void setStrFechaHabitaciones(String strFechaHabitaciones) {
+        this.strFechaHabitaciones = strFechaHabitaciones;
+    }
+
+    public String getStrFechaInicial() {
+        return strFechaInicial;
+    }
+
+    public void setStrFechaInicial(String strFechaInicial) {
+        this.strFechaInicial = strFechaInicial;
+    }
+
+    public String getStrFechaFinal() {
+        return strFechaFinal;
+    }
+
+    public void setStrFechaFinal(String strFechaFinal) {
+        this.strFechaFinal = strFechaFinal;
+    }
+    
+    
 
     public String getStrFechaEntrada() {
         return strFechaEntrada;
